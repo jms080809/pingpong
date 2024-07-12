@@ -1,7 +1,6 @@
 from vpython import *
 import tkinter as tk
-
-print(vec(tuple([1, 1, 1])))
+import random
 
 # a = sphere(pos=vec(0, 0, 0), size=vec(1, 1, 1), make_trail=True, color=vec(0, 1, 0))
 
@@ -42,3 +41,72 @@ print(vec(tuple([1, 1, 1])))
 #     if a.pos.z - compl >= wallF.pos.z or a.pos.z + compl <= wallBK.pos.z:
 #         velocity.z *= -1  # +plusminus * random()
 #     a.trail_color = vec(random(), random(), random())
+
+
+# Setup - environment
+scene.ambient = color.white * 0.7
+container_pos = vec(0, 0, 0)
+
+axis_size = 10  # m
+
+wall_thin = 0.5
+wall_Right = box(
+    pos=container_pos + vec(axis_size * 2, 0, 0),
+    color=vec(1, random.random(), random.random()),
+    size=vec(wall_thin, axis_size * 2, 0),
+)
+wall_Left = box(
+    pos=container_pos + vec(0, 0, 0),
+    color=vec(1, random.random(), random.random()),
+    size=vec(wall_thin, axis_size * 2, 0),
+)
+wall_Bottom = box(
+    pos=container_pos + vec(wall_Right.pos.x / 2, -axis_size, 0),
+    color=vec(1, random.random(), random.random()),
+    size=vec(axis_size * 2, wall_thin, 0),
+)
+wall_Top = box(
+    pos=container_pos + vec(wall_Right.pos.x / 2, axis_size, 0),
+    color=vec(1, random.random(), random.random()),
+    size=vec(axis_size * 2, wall_thin, 0),
+)
+
+# Number of blocks and row and column
+N = 20
+# Number of blocks' row and column
+M = 9
+
+# Block dimensions
+block_width = (wall_Right.pos.x - wall_Left.pos.x) / N
+block_height = (wall_Top.pos.y - wall_Bottom.pos.y) * 50 / 100 / M
+
+# Create blocks
+blocks = []
+for j in range(M):
+    for i in range(N):
+        block = box(
+            pos=container_pos
+            + vec(
+                wall_Left.pos.x + block_width / 2 + i * block_width,
+                wall_Top.pos.y - 2 * wall_thin - j * block_height,
+                0,
+            ),
+            size=vec(block_width, block_height, wall_thin),
+            color=vec(random.random(), random.random(), random.random()),
+        )
+        blocks.append(block)
+
+
+# Print the position of blocks (for verification)
+for block in blocks:
+    print(f"Block position: {block.pos.x}")
+
+
+# Adjust the camera position to better view the blocks
+
+
+a = [1, 2, 3]
+for i in a:
+    a[a.index(i)] = None
+    del i
+    print(a)
