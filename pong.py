@@ -163,9 +163,9 @@ def try_init():
     # obstacle blocks generation
 
     # Number of blocks and row and column
-    N = 20
+    N = 10
     # Number of blocks' row and column
-    M = 9
+    M = 5
 
     # Block dimensions
     global block_width
@@ -324,6 +324,32 @@ while retry:
 
     # ball-blocks collision
     block_detect()
+    # GAME WIN logic
+    if Score == len(blocks):
+        message = text(
+            text=f"YOU WON!\nYour Score: {round(Score)}",
+            pos=vec(
+                wall_Right.pos.x / 2,
+                wall_Right.pos.y / 2,
+                0,
+            ),
+            align="center",
+            height=8,
+            color=color.red,
+        )
+        print(f"YOU WON!\nYour Score: {Score}")
+        continuebool = list(input("Retry? then  input any characters or to stop, blank:"))
+        print(len(continuebool))
+        chime.success()
+
+        if len(continuebool) != 0:
+            message.visible = False
+            del message
+            try_init()
+            continue
+        else:
+            retry = False
+            break
     # GAMEOVER logic
     if ball.pos.y <= wall_Bottom.pos.y:
         ball.visible = False
